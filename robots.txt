@@ -1,7 +1,6 @@
 # Kappel Informática & Tecnologia
 User-agent: *
 Allow: /
-Disallow: /scripts/
 
 # Buscadores e assistentes de IA são bem-vindos (GEO)
 User-agent: Googlebot

@@ -6,6 +6,7 @@ Tudo que muda com frequência (domínio, contato, PCs à venda, FAQ) fica nas
 constantes abaixo. Rode o script de novo depois de editar e faça o deploy da
 pasta raiz do repositório.
 """
+import hashlib
 import json
 import os
 from datetime import date
@@ -48,6 +49,12 @@ PCS = [
         "price": 3890,
     },
 ]
+
+
+def asset_v(rel):
+    """Hash curto do arquivo para quebrar cache (o vercel.json cacheia CSS/JS por 1 ano)."""
+    with open(os.path.join(ROOT, rel.lstrip("/")), "rb") as f:
+        return rel + "?v=" + hashlib.sha1(f.read()).hexdigest()[:10]
 
 
 def wa(text):
@@ -220,7 +227,7 @@ def head(title, desc, path, schema_nodes, og_type="website"):
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/sora-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="{css}">
 {schema}
 <!--
   GA4: troque G-XXXXXXXXXX pelo ID real e descomente.
@@ -232,7 +239,7 @@ def head(title, desc, path, schema_nodes, og_type="website"):
 <body>
 {icons}
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
-""".format(title=title, desc=desc, url=url, og_type=og_type, name=NAME, site=SITE, schema=jsonld(schema_nodes), icons=ICONS)
+""".format(title=title, desc=desc, url=url, og_type=og_type, name=NAME, site=SITE, schema=jsonld(schema_nodes), icons=ICONS, css=asset_v("/assets/css/site.css"))
 
 
 def header(active=""):
@@ -299,11 +306,11 @@ def footer():
   </div>
 </footer>
 <a class="zap-float" href="{wa}" target="_blank" rel="noopener" aria-label="Chamar a Kappel no WhatsApp">{zap}<span>Chamar no WhatsApp</span></a>
-<script src="/assets/js/site.js" defer></script>
+<script src="{js}" defer></script>
 </body>
 </html>
 """.format(cities=cities, wa=wa("Oi, Kappel! Vim pelo site e quero um orçamento."), phone=PHONE_DISPLAY, email=EMAIL,
-           ig=INSTAGRAM, maps=MAPS, street=STREET, city=CITY, state=STATE, year=date.today().year, name=NAME, zap=icon("zap"))
+           ig=INSTAGRAM, maps=MAPS, street=STREET, city=CITY, state=STATE, year=date.today().year, name=NAME, zap=icon("zap"), js=asset_v("/assets/js/site.js"))
 
 
 # ---------------------------------------------------------------- blocos reutilizáveis
@@ -923,7 +930,6 @@ def build_seo_files():
     write("/robots.txt", """# Kappel Informática & Tecnologia
 User-agent: *
 Allow: /
-Disallow: /scripts/
 
 # Buscadores e assistentes de IA são bem-vindos (GEO)
 User-agent: Googlebot

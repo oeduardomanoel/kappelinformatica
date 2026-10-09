@@ -1,6 +1,6 @@
 # Kappel Informática & Tecnologia · site
 
-Site estático da Kappel Informática (Tijucas/SC). Sem framework, sem dependência de build em produção: é só HTML, CSS e JS servidos da raiz do repositório.
+Site estático da Kappel Informática (Tijucas/SC), pronto para a Vercel. Sem framework e sem build em produção: é só HTML, CSS e JS servidos da raiz do repositório.
 
 ## Estrutura
 
@@ -13,6 +13,7 @@ pc-gamer/                          Vitrine de PCs + formulário de troca de usad
 empresas/                          Assistência para comércios e escritórios
 404.html
 robots.txt  sitemap.xml  llms.txt  site.webmanifest
+vercel.json  .vercelignore          Configuração de deploy na Vercel
 assets/css/site.css  assets/js/site.js  assets/fonts/  assets/img/
 scripts/build.py                   Gerador das páginas (fonte única de dados)
 ```
@@ -41,16 +42,34 @@ O que mais muda no dia a dia:
 - Fontes auto-hospedadas com preload, imagens em SVG, JS mínimo e animações que respeitam `prefers-reduced-motion`.
 - Botões de WhatsApp com mensagem pré-preenchida por serviço e por PC. O formulário de troca monta a mensagem e abre o WhatsApp.
 
-## Deploy
+## Deploy na Vercel
 
-Funciona em qualquer hospedagem estática servindo a raiz do repositório: Netlify, Vercel, Cloudflare Pages ou GitHub Pages com domínio próprio. Os caminhos são absolutos (`/assets/...`), então o site precisa estar na raiz do domínio.
+O projeto já vem configurado (`vercel.json` + `.vercelignore`). Não tem build nem dependência: a Vercel publica os arquivos da raiz.
+
+1. Na Vercel: **Add New → Project → Import** o repositório `kappelinformatica`.
+2. Framework Preset: **Other**. Deixe Build Command, Install Command e Output Directory como estão (o `vercel.json` já define).
+3. **Deploy**.
+4. Em **Settings → Domains**, adicione `www.seudominio.com.br` e `seudominio.com.br`, deixando o domínio sem www redirecionando para o www. Se o domínio final for outro, troque a constante `SITE` em `scripts/build.py`, rode o build e faça commit antes.
+
+O que o `vercel.json` faz:
+
+- **URLs limpas com barra no final** (`/pc-gamer/`), iguais ao canonical e ao sitemap, sem conteúdo duplicado.
+- **Noindex automático em `*.vercel.app`**: as URLs de prévia da Vercel não entram no Google, só o domínio oficial.
+- **Cache**: fontes, CSS e JS por 1 ano (o build coloca `?v=hash` no CSS e no JS, então toda alteração já chega no visitante); imagens por 7 dias.
+- **Cabeçalhos de segurança**: nosniff, referrer policy, bloqueio de iframe externo e permissões de câmera, microfone e localização desligadas.
+- **Atalhos curtos** para bio, QR code e cartão de visita:
+  - `/whatsapp` (ou `/zap`) abre o WhatsApp com a mensagem de orçamento
+  - `/troca` leva ao formulário de troca de usado
+  - `/pc` leva à vitrine de PC Gamer
+  - `/contato` e `/servicos` levam às seções da home
+- **404 personalizado** (`404.html`).
 
 Depois de publicar:
 
 1. Cadastrar o domínio no Google Search Console e enviar `/sitemap.xml`.
 2. Criar ou reivindicar o Perfil da Empresa no Google com o mesmo nome, endereço e telefone do site, e colocar o link do site nele.
-3. Colocar o link do site na bio do Instagram.
-4. Ativar GA4 e Meta Pixel: os snippets estão comentados no `<head>` dentro de `scripts/build.py` (função `head`).
+3. Colocar o link do site na bio do Instagram (ou `seudominio.com.br/whatsapp` direto).
+4. Ativar GA4 e Meta Pixel: os snippets estão comentados no `<head>` dentro de `scripts/build.py` (função `head`). Se preferir, ative também o Vercel Web Analytics no painel do projeto.
 
 ## Pendências com o cliente
 
