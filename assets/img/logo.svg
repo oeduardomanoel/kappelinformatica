@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="16 15 68 66" role="img" aria-label="Kappel Informática">
+  <defs>
+    <linearGradient id="kc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C98A3C"/>
+      <stop offset="1" stop-color="#AD6F28"/>
+    </linearGradient>
+    <mask id="km" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+      <g fill="#fff">
+        <circle cx="26" cy="24.5" r="6.2"/>
+        <circle cx="74" cy="24.5" r="6.2"/>
+        <path d="M36 22 H64 L73.5 34 L74 52 L50 78 L26 52 L26.5 34 Z"/>
+      </g>
+      <g fill="none" stroke="#000" stroke-width="3.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M44.5 20 L47.5 28.5 V35 L44 48 M55.5 20 L52.5 28.5 V35 L56 48"/>
+        <path d="M41 21 L36.5 28 L41 35 M59 21 L63.5 28 L59 35"/>
+        <path d="M37.5 20 L24.5 36.5 M62.5 20 L75.5 36.5"/>
+        <path d="M26.5 35 L35.5 44.5 M73.5 35 L64.5 44.5"/>
+        <path d="M35.5 44.5 L43 42.5 L45 49.5 L39.5 50 Z M64.5 44.5 L57 42.5 L55 49.5 L60.5 50 Z"/>
+        <path d="M44 49.5 V56 L50 62 L56 56 V49.5"/>
+        <path d="M37.5 51 L50 70 L62.5 51"/>
+      </g>
+      <path d="M46.3 54.8 H53.7 L51.8 58.6 H48.2 Z" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="100" height="100" fill="url(#kc)" mask="url(#km)"/>
+</svg>
